@@ -91,7 +91,7 @@ function setupGrid() {
   let gridHtmlString = '';
   for (let index_Y = 0; index_Y < gridSize; index_Y++) {
     for (let index_X = 0; index_X < gridSize; index_X++) {
-      gridHtmlString += `<div onclick="onCellClick(event)" id="${index_X}-${index_Y}" class="grid-cell">${index_X}-${index_Y}</div>`;
+      gridHtmlString += `<div ontouchstart="onCellClick(event)" id="${index_X}-${index_Y}" class="grid-cell">${index_X}-${index_Y}</div>`;
     }
   }
 

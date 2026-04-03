@@ -20,7 +20,7 @@ This is mostly a *proof of concept* so the code here is awfull, I know.
 
 ## Changelog
 
-- v 0.0.0.2 - fix image url
+- v 0.0.0.3 - touchstart au lieu de click
 
 ---
 
