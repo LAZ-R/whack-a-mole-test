@@ -1,4 +1,4 @@
-const version = '0.0.0.1';
+const version = '0.0.0.2';
 const CACHE_NAME = `whack-a-mole-test-${version}`;
 
 const APP_SHELL = [

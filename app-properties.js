@@ -1,5 +1,5 @@
 export const APP_NAME = "Whack a Mole test";
-export const APP_VERSION = '0.0.0.1';
+export const APP_VERSION = '0.0.0.2';
 export const APP_LOCAL_STORAGE_ID = `whack-a-mole-test-0001`;
 
 /* 
@@ -7,5 +7,5 @@ export const APP_LOCAL_STORAGE_ID = `whack-a-mole-test-0001`;
 
 # CHANGELOG ###############################################
 
-v 0.0.0.1 - init
+v 0.0.0.2 - fix image url
 */

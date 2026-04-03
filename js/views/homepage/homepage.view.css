@@ -31,7 +31,7 @@
     text-align: center;
 
     &.playing {
-      background-image: url('/assets/medias/images/island.png');
+      background-image: url('/whack-a-mole-test/assets/medias/images/island.png');
       background-position: center;
       background-size: cover;
     }
