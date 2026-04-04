@@ -65,11 +65,14 @@
       width: 100%;
       padding: 0px 16px;
 
+      .special {
+        color: hsl(285, 100%, 60%);
+      }
       .win {
-        color: yellowgreen;
+        color: hsl(120, 100%, 50%);
       }
       .loose {
-        color: hsl(0, 100%, 65%)
+        color: hsl(0, 100%, 50%)
       }
 
       .colored-result {

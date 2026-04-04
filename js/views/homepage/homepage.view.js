@@ -202,7 +202,7 @@ function updateTime() {
         <span class="spaced-text"><span>Score</span><strong>${currentScore}</strong></span>
         <hr>
         <span class="spaced-text"><span><strong>Accuracy</strong><span style="font-size: 12px;"> (% of activated cells)</span></span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(accuracy, 0, 100)}">${accuracy}%</strong></span>
-        <span class="spaced-text"><span><strong>Completion</strong><span style="font-size: 12px;"> (% of target)</span></span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(completion, 0, 100)}">${completion}%</strong></span>
+        <span class="spaced-text"><span><strong>Completion</strong><span style="font-size: 12px;"> (% of target)</span></span><strong class="${completion < 100 ? 'loose' : completion < 120 ? 'win' : 'special'}">${completion}%</strong></span>
         <hr>
         <p>
           ${
