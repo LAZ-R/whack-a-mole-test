@@ -20,7 +20,7 @@ This is mostly a *proof of concept* so the code here is awfull, I know.
 
 ## Changelog
 
-- v 0.0.0.3 - touchstart au lieu de click
+- v 0.0.0.4 - ajout results à la fin d'une partie
 
 ---
 

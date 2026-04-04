@@ -55,6 +55,32 @@
         background-color: hsl(80, 61%, 50%);
       }
     }
+
+    .results {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 6px;
+      width: 100%;
+      padding: 0px 16px;
+
+      .win {
+        color: yellowgreen;
+      }
+      .loose {
+        color: hsl(0, 100%, 65%)
+      }
+
+      .colored-result {
+        --hue-value: 0;
+        color: hsl(var(--hue-value), 100%, 50%);
+      }
+
+      hr {
+        margin: 4px auto;
+      }
+    }
   }
 }
 

@@ -84,6 +84,23 @@ export function render() {
   updateMenuDom('homepage');
 }
 
+function getRangedHueValue(currentValue, baddestValue, greatestValue) {
+  if (baddestValue === greatestValue) {
+    return 0;
+  }
+
+  const ratio = (currentValue - baddestValue) / (greatestValue - baddestValue);
+  // Hors bornes
+  if (ratio < 0) return 0; // worse than baddest
+  if (ratio > 1) return 285; // better than greatest
+
+  // Dans la plage
+  const result = ratio * 120;
+
+  // Clamp entre 0 et 120 (optionnel mais souvent utile)
+  return Math.max(0, Math.min(120, result));
+}
+
 function setupGrid() {
   const screenArea = document.getElementById('screenArea');
   screenArea.style = `--grid-size: ${gridSize};`;
@@ -99,16 +116,6 @@ function setupGrid() {
 }
 
 function launchGame() {
-  let currentTime = Date.now();
-  if (currentTime >= currentEndingingTime) {
-    const screenArea = document.getElementById('screenArea');
-    screenArea.classList.remove('playing');
-    document.getElementById('time').innerHTML = `0s`;
-    clearTimeout(currentGameTimeout);
-    clearTimeout(currentTimeTimeout);
-    return;
-  }
-  
   let proba = getRandomIntegerBetween(1, 100);
   let shouldTrigger = proba <= triggerProbability;
   let randomCell = null;
@@ -151,7 +158,7 @@ function startGame() {
   gameDuration = document.getElementById('gameDurationInput').value;
 
   // target
-  currentTarget = ((((gameDuration * 1000) / activeTime) * (triggerProbability / 100)) * .5).toFixed(0);
+  currentTarget = ((((gameDuration * 1000) / activeTime) * (triggerProbability / 100)) * (triggerProbability / 100)).toFixed(0);
   document.getElementById('target').innerHTML = currentTarget;
 
   // time
@@ -164,14 +171,55 @@ function startGame() {
   document.getElementById('activated').innerHTML = activated;
 
   setupGrid();
-  launchGame();
   document.getElementById('screenArea').classList.add('playing');
   updateTime();
+  setTimeout(() => {
+    launchGame();
+  }, 750);
 }
 window.startGame = startGame;
 
 function updateTime() {
   let currentTime = Date.now();
+  if (currentTime >= currentEndingingTime) {
+    // TIME IS UP
+    const screenArea = document.getElementById('screenArea');
+    screenArea.classList.remove('playing');
+    document.getElementById('time').innerHTML = `0s`;
+    clearTimeout(currentGameTimeout);
+    clearTimeout(currentTimeTimeout);
+    const accuracy = Number((currentScore / activated * 100).toFixed(2));
+    const completion = Number((currentScore / currentTarget * 100).toFixed(2));
+    screenArea.innerHTML = `
+      <div class="results">
+        <span class="spaced-text"><span>Grid size</span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(gridSize, 12, 2)}">${gridSize} x ${gridSize}</strong></span>
+        <span class="spaced-text"><span>Active time</span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(activeTime, 100, 1000)}">${activeTime}ms</strong></span>
+        <span class="spaced-text"><span>Trigger probability</span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(triggerProbability, 100, 1)}">${triggerProbability}%</strong></span>
+        <span class="spaced-text"><span>Game duration</span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(gameDuration, 300, 30)}">${gameDuration}s</strong></span>
+        <hr>
+        <span class="spaced-text"><span>Activated</span><strong>${activated}</strong></span>
+        <span class="spaced-text"><span>Target</span><strong>${currentTarget}</strong></span>
+        <span class="spaced-text"><span>Score</span><strong>${currentScore}</strong></span>
+        <hr>
+        <span class="spaced-text"><span><strong>Accuracy</strong><span style="font-size: 12px;"> (% of activated cells)</span></span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(accuracy, 0, 100)}">${accuracy}%</strong></span>
+        <span class="spaced-text"><span><strong>Completion</strong><span style="font-size: 12px;"> (% of target)</span></span><strong class="colored-result" style="--hue-value: ${getRangedHueValue(completion, 0, 100)}">${completion}%</strong></span>
+        <hr>
+        <p>
+          ${
+            completion >= 170 ? 'It was definitely too easy for you !' 
+            : completion >= 140 ? 'Maybe it was a little <i>too</i> easy ?' 
+            : completion >= 110 ? 'That didn\'t seem too hard for you, right?' 
+            : completion >= 100 ? 'The perfect balance between challenging and fun!' 
+            : completion >= 75 ? 'Maybe you can try to adjust some sliders to make it slightly easier ?' 
+            : completion >= 33 ? 'You should adjust the sliders to make it easier for you' 
+            : 'Trying to prove something?'
+          }
+        </p>
+      </div>
+    `;
+    return;
+  }
+
   document.getElementById('time').innerHTML = `${((currentEndingingTime - currentTime) / 1000).toFixed(1)}s`;
   currentTimeTimeout = setTimeout(() => {
     updateTime()
